@@ -65,7 +65,7 @@ class NewsDelete(DeleteView):
 #
 #     def form_valid(self, form):
 #         post = form.save(commit=False)
-#         post.category_types =
+#         post.category_types = 'AR'
 #         return super().form_valid(form)
 
 
@@ -76,7 +76,7 @@ class NewsDelete(DeleteView):
 #
 #     def form_valid(self, form):
 #         post = form.save(commit=False)
-#         post.category_types =
+#         post.category_types = 'AR'
 #         return super().form_valid(form)
 
 
@@ -87,5 +87,5 @@ class NewsDelete(DeleteView):
 #
 #     def form_valid(self, form):
 #         post = form.save(commit=False)
-#         post.category_types =
+#         post.category_types = 'AR'
 #         return super().form_valid(form)

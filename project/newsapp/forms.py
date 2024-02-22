@@ -9,15 +9,7 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = '__all__'
-        # fields = [
-        #     'author'
-        #     'date_create'
-        #     'post_category',
-        #     'title',
-        #     'text',
-        #     'rating',
-        # ]
-
+        
     def clean(self):
         cleaned_data = super().clean()
         title = cleaned_data.get("title")

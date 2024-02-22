@@ -1,0 +1,56 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block content %}
+{% if posts %}
+    <h1>Количество публикаций: {{ posts|length }}</h1>
+
+    <hr>
+        <table width="100%" style="margin-top: 35px">
+            <tr>
+                <td>НАЗВАНИЕ</td>
+                <td>ДАТА ПУБЛИКАЦИИ</td>
+                <td>ОПИСАНИЕ</td>
+                <td>КАТЕГОРИЯ</td>
+            </tr>
+            {% for post in posts %}
+            <tr>
+                <td>{{ post.title }}</td>
+                <td>{{ post.date_create|date:'d M Y ' }}</td>
+                <td>{{ post.text|truncatewords:10|censor }}</td>
+                {% for cat in post.post_category.all %}
+                <td>{{ cat.name }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    <hr>
+    {% else %}
+        <h2>Публикаций нет!</h2>
+
+    {% endif %}
+
+{% if page_obj.has_previous %}
+       <a href="?{% url_replace page=1 %}">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {{ page_obj.number }}
+
+   {% if page_obj.has_next %}
+       <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+{% endblock content %}
+
+
+

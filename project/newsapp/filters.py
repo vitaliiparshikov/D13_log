@@ -1,15 +1,14 @@
 from django_filters import FilterSet, ModelMultipleChoiceFilter, DateTimeFilter
 from .models import Post, Category
-from django.forms import DateTimeInput
+from django.forms import DateInput
 
 
 class PostFilter(FilterSet):
     date_create_after = DateTimeFilter(
         field_name='date_create',
         lookup_expr='date__gte',
-        widget=DateTimeInput(
-            format='%Y-%m-%dT%H:%M',
-            attrs={'type': 'date'}
+        widget=DateInput(
+            attrs={'type': 'date'}, 
         )
     )
 

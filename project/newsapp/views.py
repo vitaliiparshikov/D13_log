@@ -7,6 +7,9 @@ from .forms import PostForm
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 class NewsList(ListView):
     model = Post

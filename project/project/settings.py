@@ -125,3 +125,127 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'style' : '{',
+    'formatters': {
+        'simple': {
+            'format': '%(asctime)s %(levelname)s %(message)s'
+        },
+        'path': {
+            'format': '%(pathname)s %(asctime)s %(levelname)s %(message)s'
+        },
+        'exc': {
+            'format': '%(exc_info)s %(pathname)s %(asctime)s %(levelname)s %(message)s'
+        },
+        'module': {
+            'format': '%(module)s %(asctime)s %(levelname)s %(message)s'
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    'handlers': {
+        'console': {
+            'console_debug' : {
+                'level': 'DEBUG',
+                'filters': ['require_debug_true'],
+                'class': 'logging.StreamHandler',
+                'formatters': 'simple'
+                },
+            'console_warning' : {
+                'level': 'WARNING',
+                'filters': ['require_debug_true'],
+                'class': 'logging.StreamHandler',
+                'formatters': 'path'
+                },
+            'console_error' : {
+                'level': 'ERROR',
+                'filters': ['require_debug_true'],
+                'class': 'logging.StreamHandler',
+                'formatters': 'exc'
+                },
+            'console_critical' : {
+                'level': 'CRITICAL',
+                'filters': ['require_debug_true'],
+                'class': 'logging.StreamHandler',
+                'formatters': 'exc'
+                },
+        },
+        'newsapp' : {
+            'news1' : {
+                'level': 'INFO',
+                'filters': ['require_debug_false'],
+                'class': 'logging.FileHandler',
+                'filename' : 'general.log',
+                'formatters': 'module'
+                },
+            'news2' : {
+                'level': 'ERROR',
+                'filters': ['require_debug_true'],
+                'class': 'logging.FileHandler',
+                'filename' : 'errors.log',
+                'formatters': 'exc'
+                },
+            'news3' : {
+                'level': 'CRITICAL',
+                'filters': ['require_debug_true'],
+                'class': 'logging.FileHandler',
+                'filename' : 'errors.log',
+                'formatters': 'exc'
+                },
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'filters' : 'require_debug_false',
+        },
+
+            },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'newsapp'],
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['news2'],
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['news2'],
+            'propagate': False,
+        },
+        'django.template': {
+            'handlers': ['news2'],
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['news2'],
+            'propagate': False,
+        },
+        'django.security': {
+            'filename' : 'security.log',
+            'formatters': 'module',
+        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+            'formatters': 'path',
+        },
+        'django.server': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+            'formatters': 'path',
+        },
+    },
+}

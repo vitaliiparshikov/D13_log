@@ -153,99 +153,80 @@ LOGGING = {
         },
     },
     'handlers': {
-        'console': {
-            'console_debug' : {
-                'level': 'DEBUG',
-                'filters': ['require_debug_true'],
-                'class': 'logging.StreamHandler',
-                'formatters': 'simple'
-                },
-            'console_warning' : {
-                'level': 'WARNING',
-                'filters': ['require_debug_true'],
-                'class': 'logging.StreamHandler',
-                'formatters': 'path'
-                },
-            'console_error' : {
-                'level': 'ERROR',
-                'filters': ['require_debug_true'],
-                'class': 'logging.StreamHandler',
-                'formatters': 'exc'
-                },
-            'console_critical' : {
-                'level': 'CRITICAL',
-                'filters': ['require_debug_true'],
-                'class': 'logging.StreamHandler',
-                'formatters': 'exc'
-                },
+        'console_debug': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatters': 'simple'
         },
-        'newsapp' : {
-            'news1' : {
-                'level': 'INFO',
-                'filters': ['require_debug_false'],
-                'class': 'logging.FileHandler',
-                'filename' : 'general.log',
-                'formatters': 'module'
-                },
-            'news2' : {
-                'level': 'ERROR',
-                'filters': ['require_debug_true'],
-                'class': 'logging.FileHandler',
-                'filename' : 'errors.log',
-                'formatters': 'exc'
-                },
-            'news3' : {
-                'level': 'CRITICAL',
-                'filters': ['require_debug_true'],
-                'class': 'logging.FileHandler',
-                'filename' : 'errors.log',
-                'formatters': 'exc'
-                },
+        'console_warning': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatters': 'path'
+        },
+        'console_error': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatters': 'exc'
+        },
+        'news_info' : {
+            'level': 'INFO',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'filename' : 'general.log',
+            'formatters': 'module'
+        },
+        'news_error' : {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.FileHandler',
+            'filename' : 'errors.log',
+            'formatters': 'exc'
+        },
+        'news_security' : {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.FileHandler',
+            'filename' : 'security.log',
+            'formatters': 'path'
         },
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
             'filters' : 'require_debug_false',
         },
-
-            },
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'newsapp'],
-            'propagate': True,
+        'handlers': ['console_debug', 'console_warning', 'console_error' ],
+        'propagate': True,
         },
         'django.request': {
-            'handlers': ['news2'],
+            'handlers': ['news_error', 'mail_admins', 'news_security'],
+            'level': 'ERROR',
             'propagate': False,
         },
         'django.server': {
-            'handlers': ['news2'],
+            'handlers': ['news_error', 'news_security'],
+            'level': 'ERROR',
             'propagate': False,
         },
         'django.template': {
-            'handlers': ['news2'],
+            'handlers': ['news_error'],
+            'level': 'ERROR',
             'propagate': False,
         },
         'django.db.backends': {
-            'handlers': ['news2'],
+            'handlers': ['news_error'],
+            'level': 'ERROR',
             'propagate': False,
         },
         'django.security': {
-            'filename' : 'security.log',
-            'formatters': 'module',
-        },
-        'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['news_security'],
             'level': 'ERROR',
             'propagate': False,
-            'formatters': 'path',
-        },
-        'django.server': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': False,
-            'formatters': 'path',
         },
     },
 }
